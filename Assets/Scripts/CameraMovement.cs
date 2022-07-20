@@ -16,7 +16,7 @@ public class CameraMovement : MonoBehaviour
     {
         float time = 0;
         Vector2 startPosition = transform.position;
-        float targetY = transform.position.y - NotesController.distanceY * 2;
+        float targetY = transform.position.y - NotesController.distanceY * 3;
         Vector2 targetPosition = new Vector2(transform.position.x, targetY);
 
         while (time < durationOfMove)

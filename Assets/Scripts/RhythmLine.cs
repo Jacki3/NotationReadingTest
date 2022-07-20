@@ -16,7 +16,7 @@ public class RhythmLine : MonoBehaviour
 
     private int movesMadeOnStaff = 0;
 
-    public int totalMovesMade = 0;
+    private int totalMovesMade = 0;
 
     private int allMoves = 0;
 
@@ -42,13 +42,6 @@ public class RhythmLine : MonoBehaviour
             totalMovesMade++;
             allMoves++;
 
-            // if (movesMade >= 4)
-            // {
-            //     dist = distanceToMove + .5f;
-            //     movesMade = 0;
-            // }
-            // else
-            //     dist = distanceToMove;
             if (movesMadeOnStaff >= 16)
             {
                 movesMadeOnStaff = 0;
@@ -61,16 +54,18 @@ public class RhythmLine : MonoBehaviour
                 yield return new WaitForSeconds(AudioController.beatPerSec);
             }
 
-            if ((totalMovesMade % 32) == 0)
+            if ((totalMovesMade % 47) == 0)
             {
-                print("moving cam");
                 cameraMovement.MoveCameraDown();
             }
 
             transform.position += new Vector3(dist, 0, 0);
             yield return new WaitForSeconds(AudioController.beatPerSec);
 
-            if (allMoves == NotesController.totalNotes)
+            if (
+                allMoves - 1 ==
+                NotesController.totalNotes - NotesController.totalStaffs_Static
+            )
             {
                 StateController.currentState = StateController.States.end;
                 break;

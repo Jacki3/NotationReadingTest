@@ -34,9 +34,6 @@ public class NotesController : MonoBehaviour
     [SerializeField]
     private List<Note> allNotes = new List<Note>();
 
-    [SerializeField]
-    private NotePrefab[] notePrefabs;
-
     private float grandStaffDefaultDistY;
 
     private float grandStaffDefaultDistX;
@@ -51,12 +48,16 @@ public class NotesController : MonoBehaviour
 
     public static int totalNotes;
 
+    public static int totalStaffs_Static;
+
     [Serializable]
     private class Note
     {
         public int note;
 
         public int noteLength;
+
+        public bool isEighth;
     }
 
     void Awake()
@@ -71,17 +72,17 @@ public class NotesController : MonoBehaviour
         grandStaffDefaultDistY = firstParent.transform.localPosition.y;
         grandStaffDefaultDistX = firstParent.transform.localPosition.x;
         distanceY = grandStaffDistanceY;
-        SpawnNotes();
 
-        //change the note prefab to text and rework the logic below - finalise this!
-        //add all positions/ledgers etc. and ensure that the note is correct (i.e., 24 NOT 0 but still uses right pos)
-        //ensure scrolling works and stopping when finished works
-        //hook up total complete ui to stats - ensure users can play and this saves and same as flash card; track if they quit before and only save score if they finish a whole piece n save this value (LATER)
-        //add break symbols
-        //look at sasr again for scoring then implement something similar
-        //if time, add a more faded colour on the non notes part of staff
+        //diff between bass/treble notes = -2.29
+        //add break symbols + flats/sharps (use the game logic)
+        //look at sasr again for scoring then implement something similar -- GET HERE THEN GAME
+        //add all positions for bass/treble
+        //ensure users can play and this saves and same as flash card; track if they quit before and only save score if they finish a whole piece n save this value
+        //hook up total complete ui to stats
         //write to file
         //upload to server once you know how this is done
+        //if time, add a more faded colour on the non notes part of staff
+        //if there is time then add eighth notes properly
     }
 
     private void PlayNote(int note, float vel)
@@ -93,7 +94,7 @@ public class NotesController : MonoBehaviour
     {
     }
 
-    private void SpawnNotes()
+    public void SpawnNotes()
     {
         int notesInBar = 0;
         int notesInStaff = 0;
@@ -102,6 +103,7 @@ public class NotesController : MonoBehaviour
         Transform staffParent = firstParent;
         foreach (Note note in allNotes)
         {
+            if (note.isEighth) note.noteLength = 1;
             totalNotes += note.noteLength;
 
             Note previousNote = null;
@@ -118,9 +120,9 @@ public class NotesController : MonoBehaviour
 
             NotePrefab notePrefab =
                 Instantiate(_notePrefab, staffParent, false);
-            notePrefab.SetNoteText(note.noteLength);
+            notePrefab.SetNoteText(note.noteLength, note.isEighth);
             notePrefab.SetLedgerLine(note.note);
-            float posY = notePrefab.ySpawns[note.note] - staffYDist;
+            float posY = notePrefab.ySpawns[note.note % 12] - staffYDist;
 
             if (newBar)
             {
@@ -136,22 +138,22 @@ public class NotesController : MonoBehaviour
                     newStaffBool = false;
             }
 
-            notePrefab.transform.position =
-                new Vector3(startingXPos, posY, .5f);
+            notePrefab.transform.localPosition =
+                new Vector3(startingXPos, posY, 0);
 
             if (notesInBar == 4)
             {
                 // newBar = true;
                 float barXPos =
-                    notePrefab.transform.position.x +
+                    notePrefab.transform.localPosition.x +
                     note.noteLength -
                     barDistance;
                 GameObject newBarLine =
                     Instantiate(barLine, staffParent, false);
                 float barYPos =
                     newBarLine.transform.localPosition.y - staffYDist;
-                newBarLine.transform.position =
-                    new Vector3(barXPos, barYPos, .5f);
+                newBarLine.transform.localPosition =
+                    new Vector3(barXPos, barYPos, 0);
                 notesInBar = 0;
                 // startingXPos = barXPos;
             }
@@ -166,8 +168,8 @@ public class NotesController : MonoBehaviour
                 newStaff.transform.localPosition =
                     new Vector3(grandStaffDefaultDistX, staffPosY, 1);
 
-                staffYDist = grandStaffDistanceY * totalStaffs;
                 totalStaffs++;
+                totalStaffs_Static = totalStaffs;
                 startingXPos = defaultXPos;
                 newStaffBool = true;
             }

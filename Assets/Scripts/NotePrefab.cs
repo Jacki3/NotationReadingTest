@@ -17,8 +17,10 @@ public class NotePrefab : MonoBehaviour
         noteText = GetComponent<TextMeshPro>();
     }
 
-    public void SetNoteText(int noteLength)
+    public void SetNoteText(int noteLength, bool isEighth)
     {
+        ledgerText.characterSpacing = 0;
+
         switch (noteLength)
         {
             case 1:
@@ -29,12 +31,16 @@ public class NotePrefab : MonoBehaviour
                 break;
             case 4:
                 noteText.text = "w";
+                ledgerText.characterSpacing = 12;
                 break;
         }
+
+        if (isEighth) noteText.text = "n";
     }
 
     public void SetLedgerLine(int note)
     {
+        note %= 12;
         switch (note)
         {
             case 0:

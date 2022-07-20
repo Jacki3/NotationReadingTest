@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 5, y: 5}
+  m_SizeDelta: {x: 1, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &9139297055798208550
 MeshRenderer:
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: q
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 46ab76bfb34171c47ac1b21c5d9a1ea4, type: 2}
   m_sharedMaterial: {fileID: 4600195206236330455, guid: 46ab76bfb34171c47ac1b21c5d9a1ea4, type: 2}
@@ -134,8 +134,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_HorizontalAlignment: 32
+  m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -185,8 +185,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ledgerText: {fileID: 9139297056194864509}
   ySpawns:
-  - 2.9
-  - 3.26
+  - 0.61
+  - 0.61
+  - 0.783
+  - 0.783
+  - 0.89
+  - 0.984
+  - 0.984
+  - 1.087
+  - 1.087
+  - 1.183
+  - 1.183
+  - 1.291
 --- !u!1 &9139297056194864511
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,8 +231,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.802, y: -0.95}
-  m_SizeDelta: {x: 5, y: 5}
+  m_AnchoredPosition: {x: 0.575, y: 0.04}
+  m_SizeDelta: {x: 10, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &9139297056194864498
 MeshRenderer:
@@ -312,8 +322,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -348,7 +358,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 1.3389299, w: -0.1277519}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
