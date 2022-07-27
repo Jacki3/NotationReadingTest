@@ -22,6 +22,8 @@ public class AudioController : MonoBehaviour
 
         MIDIController.NoteOn += PlaySound;
         MIDIController.NoteOff += NoteOff;
+
+        beatPerSec = 60 / helmClock.bpm;
     }
 
     void Update()

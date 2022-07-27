@@ -10,6 +10,9 @@ public class RhythmLine : MonoBehaviour
     [SerializeField]
     private CameraMovement cameraMovement;
 
+    [SerializeField]
+    private TimeLine timeLine;
+
     private float defaultXPos;
 
     private int movesMade = 0;
@@ -32,11 +35,18 @@ public class RhythmLine : MonoBehaviour
 
     private IEnumerator MoveToBeat()
     {
+        StartCoroutine(timeLine.MoveToTime());
         float dist = distanceToMove;
         float yPos = transform.position.y;
         yield return new WaitForSeconds(AudioController.beatPerSec);
         while (true)
         {
+            const float interval = 1f;
+            float nextEventTime = Time.time + interval;
+            if (Time.time >= nextEventTime)
+            {
+                nextEventTime += interval;
+            }
             movesMade++;
             movesMadeOnStaff++;
             totalMovesMade++;
@@ -70,6 +80,8 @@ public class RhythmLine : MonoBehaviour
                 StateController.currentState = StateController.States.end;
                 break;
             }
+
+            yield return null;
         }
     }
 }

@@ -123,6 +123,101 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &13589713
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 13589715}
+  - component: {fileID: 13589714}
+  - component: {fileID: 13589716}
+  m_Layer: 0
+  m_Name: TimeLine
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!212 &13589714
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13589713}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: 5996bef12b252a64c9e9d56dbd34479c, type: 3}
+  m_Color: {r: 1, g: 0.5218639, b: 0.3537736, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!4 &13589715
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13589713}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -6.7599998, y: 4.09, z: 1}
+  m_LocalScale: {x: 0.02, y: 2.6521873, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &13589716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13589713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb79066af323b23499d8e51c5f918f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &29850442
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,34 +358,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bfbf36d6aaebb648b76a63590adb966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!83 &83396640
-AudioClip:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: helm
-  m_LoadType: 0
-  m_Channels: 1
-  m_Frequency: 48000
-  m_BitsPerSample: 32
-  m_Length: 0
-  m_IsTrackerFormat: 0
-  m_Ambisonic: 0
-  m_SubsoundIndex: 0
-  m_PreloadAudioData: 1
-  m_LoadInBackground: 0
-  m_Legacy3D: 0
-  m_Resource:
-    m_Source: 
-    m_Offset: 0
-    m_Size: 0
-  m_CompressionFormat: 0
-  m_EditorResource:
-    m_Source: 
-    m_Offset: 0
-    m_Size: 0
-  m_EditorCompressionFormat: 0
 --- !u!1 &99639187
 GameObject:
   m_ObjectHideFlags: 0
@@ -468,6 +535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distanceToMove: 1
   cameraMovement: {fileID: 519420030}
+  timeLine: {fileID: 13589716}
 --- !u!1 &447796679
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,6 +804,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 465219360}
   m_CullTransparentMesh: 0
+--- !u!83 &492154757
+AudioClip:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: helm
+  m_LoadType: 0
+  m_Channels: 1
+  m_Frequency: 48000
+  m_BitsPerSample: 32
+  m_Length: 0
+  m_IsTrackerFormat: 0
+  m_Ambisonic: 0
+  m_SubsoundIndex: 0
+  m_PreloadAudioData: 1
+  m_LoadInBackground: 0
+  m_Legacy3D: 0
+  m_Resource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_CompressionFormat: 0
+  m_EditorResource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_EditorCompressionFormat: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -803,7 +899,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 9
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -850,7 +946,7 @@ GameObject:
   - component: {fileID: 843517205}
   m_Layer: 0
   m_Name: AudioController
-  m_TagString: Untagged
+  m_TagString: Break
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1049,7 +1145,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -7927406032990097657, guid: 0aac4bc44d562924cb208dcf3ee0037c, type: 2}
-  m_audioClip: {fileID: 83396640}
+  m_audioClip: {fileID: 492154757}
   m_PlayOnAwake: 1
   m_Volume: 0.5
   m_Pitch: 1
@@ -1498,7 +1594,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!225 &1407975958
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1692,6 +1788,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4699579670996405307, guid: 428642e5525bf784fb142e107bf5821f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5497086116770588568, guid: 428642e5525bf784fb142e107bf5821f, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -7.538
@@ -1867,13 +1967,13 @@ MonoBehaviour:
   firstParent: {fileID: 1978852728}
   _notePrefab: {fileID: 1890947120, guid: 4a81545dd2922a048829ec674ea34561, type: 3}
   allNotes:
-  - note: 65
+  - note: 48
     noteLength: 1
     isEighth: 0
   - note: 60
     noteLength: 1
     isEighth: 0
-  - note: 60
+  - note: 51
     noteLength: 1
     isEighth: 0
   - note: 62
@@ -2313,9 +2413,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notesController: {fileID: 1673165885}
   rhythmLine: {fileID: 384645167}
+  timeLine: {fileID: 13589716}
   audioController: {fileID: 843517201}
   countInTime: 3
-  readTime: 5
+  readTime: 2
   countDownTimeText: {fileID: 1731404984}
   lowBanner: {fileID: 869846467}
   playButton: {fileID: 1741115113}

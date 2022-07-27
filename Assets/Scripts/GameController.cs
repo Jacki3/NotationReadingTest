@@ -15,6 +15,9 @@ public class GameController : MonoBehaviour
     private RhythmLine rhythmLine;
 
     [SerializeField]
+    private TimeLine timeLine;
+
+    [SerializeField]
     private AudioController audioController;
 
     [SerializeField]
@@ -124,6 +127,7 @@ public class GameController : MonoBehaviour
         StateController.currentState = StateController.States.play;
         audioController.PlayMusic();
         rhythmLine.StartMoving();
+        notesController.StartPlay();
     }
 
     public void Exit()

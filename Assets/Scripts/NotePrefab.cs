@@ -40,10 +40,9 @@ public class NotePrefab : MonoBehaviour
 
     public void SetLedgerLine(int note)
     {
-        note %= 12;
         switch (note)
         {
-            case 0:
+            case 60:
                 ledgerText.text = "__";
                 break;
         }

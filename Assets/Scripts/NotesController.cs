@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class NotesController : MonoBehaviour
@@ -50,6 +51,8 @@ public class NotesController : MonoBehaviour
 
     public static int totalStaffs_Static;
 
+    private int noteIndex = 0;
+
     [Serializable]
     private class Note
     {
@@ -73,21 +76,26 @@ public class NotesController : MonoBehaviour
         grandStaffDefaultDistX = firstParent.transform.localPosition.x;
         distanceY = grandStaffDistanceY;
 
-        //diff between bass/treble notes = -2.29
-        //add break symbols + flats/sharps (use the game logic)
-        //look at sasr again for scoring then implement something similar -- GET HERE THEN GAME
-        //add all positions for bass/treble
+        //look at sasr again for scoring then implement something similar
         //ensure users can play and this saves and same as flash card; track if they quit before and only save score if they finish a whole piece n save this value
         //hook up total complete ui to stats
         //write to file
         //upload to server once you know how this is done
+        //flats/sharps (use the game logic)
+        //calculate all ypositions in logic using .11 as diff between notes (this may change if you change size of staff etc)
         //if time, add a more faded colour on the non notes part of staff
         //if there is time then add eighth notes properly
     }
 
     private void PlayNote(int note, float vel)
     {
-        print (note);
+        if (StateController.currentState == StateController.States.play)
+        {
+            if (note == allNotes[noteIndex].note)
+                print("Correct!");
+            else
+                print("Incorrect Note!");
+        }
     }
 
     private void NoteOff(int note)
@@ -123,6 +131,16 @@ public class NotesController : MonoBehaviour
             notePrefab.SetNoteText(note.noteLength, note.isEighth);
             notePrefab.SetLedgerLine(note.note);
             float posY = notePrefab.ySpawns[note.note % 12] - staffYDist;
+
+            if (note.note < 60)
+            {
+                //using bass note
+                foreach (Transform child in staffParent)
+                {
+                    if (child.tag == "Break") child.gameObject.SetActive(false);
+                }
+                posY -= 1.783f;
+            }
 
             if (newBar)
             {
@@ -165,6 +183,10 @@ public class NotesController : MonoBehaviour
 
                 GameObject newStaff = Instantiate(grandStaff, transform);
                 staffParent = newStaff.transform;
+                foreach (Transform child in staffParent)
+                {
+                    if (child.tag == "Break") child.gameObject.SetActive(true);
+                }
                 newStaff.transform.localPosition =
                     new Vector3(grandStaffDefaultDistX, staffPosY, 1);
 
@@ -173,6 +195,24 @@ public class NotesController : MonoBehaviour
                 startingXPos = defaultXPos;
                 newStaffBool = true;
             }
+        }
+    }
+
+    public void StartPlay()
+    {
+        StartCoroutine(PlayAlong());
+    }
+
+    private IEnumerator PlayAlong()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(AudioController.beatPerSec *
+                    allNotes[noteIndex].noteLength);
+            if (noteIndex < allNotes.Count - 1)
+                noteIndex++;
+            else
+                break;
         }
     }
 }
