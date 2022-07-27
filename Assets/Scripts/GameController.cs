@@ -35,20 +35,43 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private Button playButton;
 
+    [SerializeField]
+    private int levelsNeededToFinishTest;
+
+    public static int level = 1;
+
     void Start()
     {
         StateController.currentState = StateController.States.countdown;
+        PlayerPrefs.SetInt("LevelsComplete", level);
+
+        print(PlayerPrefs.GetInt("LevelsComplete"));
     }
 
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Space)) Initialise();
-        if (StateController.currentState == StateController.States.end)
+        int totalLevelsComplete = (PlayerPrefs.GetInt("LevelsComplete"));
+        if (totalLevelsComplete == levelsNeededToFinishTest)
         {
-            countDownTimeText.enabled = true;
-            countDownTimeText.text = "end";
-            lowBanner.SetActive(true);
-            playButton.GetComponentInChildren<TextMeshProUGUI>().text = "Next";
+            StateController.currentState = StateController.States.testComplete;
+        }
+
+        if (StateController.currentState != StateController.States.testComplete)
+        {
+            if (Input.GetKeyUp(KeyCode.Space)) Initialise();
+            if (StateController.currentState == StateController.States.end)
+            {
+                countDownTimeText.enabled = true;
+                countDownTimeText.text = "end";
+                lowBanner.SetActive(true);
+                playButton.GetComponentInChildren<TextMeshProUGUI>().text =
+                    "Next";
+            }
+        }
+        else
+        {
+            //hide it all as test is complete
+            print("test is complete!");
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 public class RhythmLine : MonoBehaviour
 {
@@ -21,11 +22,12 @@ public class RhythmLine : MonoBehaviour
 
     private int totalMovesMade = 0;
 
-    private int allMoves = 0;
+    public int allMoves = 0;
 
     void Start()
     {
         defaultXPos = transform.position.x;
+        print (defaultXPos);
     }
 
     public void StartMoving()
@@ -35,52 +37,77 @@ public class RhythmLine : MonoBehaviour
 
     private IEnumerator MoveToBeat()
     {
-        StartCoroutine(timeLine.MoveToTime());
         float dist = distanceToMove;
         float yPos = transform.position.y;
-        yield return new WaitForSeconds(AudioController.beatPerSec);
-        while (true)
+        double interval = AudioController.beatPerSecDouble;
+        double time = AudioSettings.dspTime;
+        double nextEventTime = time + interval;
+        double intervalLine = interval / 10;
+        double nextEventTimeLine = time + intervalLine;
+
+        bool movedDown = false;
+
+        while (this)
         {
-            const float interval = 1f;
-            float nextEventTime = Time.time + interval;
-            if (Time.time >= nextEventTime)
+            time = AudioSettings.dspTime;
+            if (time >= nextEventTime)
             {
-                nextEventTime += interval;
-            }
-            movesMade++;
-            movesMadeOnStaff++;
-            totalMovesMade++;
-            allMoves++;
-
-            if (movesMadeOnStaff >= 16)
-            {
-                movesMadeOnStaff = 0;
-                dist = distanceToMove;
-                yPos -= NotesController.distanceY;
-                transform.position = new Vector3(defaultXPos, yPos, .5f);
                 movesMade++;
-                totalMovesMade++;
                 movesMadeOnStaff++;
-                yield return new WaitForSeconds(AudioController.beatPerSec);
+                totalMovesMade++;
+                allMoves++;
+                if (movesMadeOnStaff >= 16)
+                {
+                    movedDown = true;
+                    nextEventTime += interval;
+                    movesMadeOnStaff = 0;
+                    dist = distanceToMove;
+                    yPos -= NotesController.distanceY;
+                    transform.position = new Vector3(defaultXPos, yPos, 0.5f);
+
+                    movesMade++;
+                    totalMovesMade++;
+                    movesMadeOnStaff++;
+                }
+                else
+                {
+                    nextEventTime += interval;
+                    transform.position += new Vector3(dist, 0, 0);
+                }
+                if ((totalMovesMade % 47) == 0)
+                {
+                    cameraMovement.MoveCameraDown();
+                }
+
+                if (
+                    allMoves - 1 ==
+                    NotesController.totalNotes +
+                    1 -
+                    NotesController.totalStaffs_Static
+                )
+                {
+                    GameController.level++;
+                    PlayerPrefs.SetInt("LevelsComplete", GameController.level);
+                    StateController.currentState = StateController.States.end;
+                    break;
+                }
+                print (movesMadeOnStaff);
             }
 
-            if ((totalMovesMade % 47) == 0)
+            if (time >= nextEventTimeLine)
             {
-                cameraMovement.MoveCameraDown();
+                if (movedDown)
+                {
+                    nextEventTimeLine += intervalLine;
+                    timeLine.transform.position = new Vector3(-6.761f, yPos, 0); //using hard code here
+                    movedDown = false;
+                }
+                else
+                {
+                    nextEventTimeLine += intervalLine;
+                    timeLine.transform.position += new Vector3(.1f, 0, 0);
+                }
             }
-
-            transform.position += new Vector3(dist, 0, 0);
-            yield return new WaitForSeconds(AudioController.beatPerSec);
-
-            if (
-                allMoves - 1 ==
-                NotesController.totalNotes - NotesController.totalStaffs_Static
-            )
-            {
-                StateController.currentState = StateController.States.end;
-                break;
-            }
-
             yield return null;
         }
     }

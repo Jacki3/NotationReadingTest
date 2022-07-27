@@ -11,6 +11,8 @@ public class AudioController : MonoBehaviour
 
     public static float beatPerSec;
 
+    public static double beatPerSecDouble;
+
     private AudioHelmClock helmClock;
 
     private HelmController helmController;
@@ -24,6 +26,7 @@ public class AudioController : MonoBehaviour
         MIDIController.NoteOff += NoteOff;
 
         beatPerSec = 60 / helmClock.bpm;
+        beatPerSecDouble = 60.0f / helmClock.bpm;
     }
 
     void Update()

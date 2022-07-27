@@ -10,6 +10,7 @@ public static class StateController
     {
         countdown,
         play,
-        end
+        end,
+        testComplete
     }
 }

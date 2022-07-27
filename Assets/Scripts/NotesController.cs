@@ -33,6 +33,9 @@ public class NotesController : MonoBehaviour
     private NotePrefab _notePrefab;
 
     [SerializeField]
+    private TimeLine timeLine;
+
+    [SerializeField]
     private List<Note> allNotes = new List<Note>();
 
     private float grandStaffDefaultDistY;
@@ -95,6 +98,8 @@ public class NotesController : MonoBehaviour
                 print("Correct!");
             else
                 print("Incorrect Note!");
+
+            //create a whole note prefab at the y played and at the current x position of the timeline - this x position can determine score
         }
     }
 
@@ -173,7 +178,6 @@ public class NotesController : MonoBehaviour
                 newBarLine.transform.localPosition =
                     new Vector3(barXPos, barYPos, 0);
                 notesInBar = 0;
-                // startingXPos = barXPos;
             }
 
             if (notesInStaff % 16 == 0)
