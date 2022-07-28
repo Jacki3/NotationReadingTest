@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NotesController : MonoBehaviour
 {
@@ -38,6 +40,9 @@ public class NotesController : MonoBehaviour
     [SerializeField]
     private List<Note> allNotes = new List<Note>();
 
+    [SerializeField]
+    private List<AllNotes> noteLevels = new List<AllNotes>();
+
     private float grandStaffDefaultDistY;
 
     private float grandStaffDefaultDistX;
@@ -54,7 +59,11 @@ public class NotesController : MonoBehaviour
 
     public static int totalStaffs_Static;
 
-    private int noteIndex = 0;
+    public int noteIndex = 0;
+
+    public List<Transform> spawedNotes = new List<Transform>();
+
+    private List<NotePrefab> playedNotes = new List<NotePrefab>();
 
     [Serializable]
     private class Note
@@ -63,13 +72,44 @@ public class NotesController : MonoBehaviour
 
         public int noteLength;
 
+        public bool guessedCorrectly;
+
         public bool isEighth;
+    }
+
+    [Serializable]
+    private class AllNotes
+    {
+        public string levelName;
+
+        public List<Note> allNotes = new List<Note>();
+    }
+
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += ResetStaticVariables;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= ResetStaticVariables;
+        MIDIController.NoteOn -= PlayNote;
+        MIDIController.NoteOff -= NoteOff;
+    }
+
+    private void ResetStaticVariables(Scene scene, LoadSceneMode mode)
+    {
+        distanceY = 0;
+        totalNotes = 0;
+        totalStaffs_Static = 0;
     }
 
     void Awake()
     {
         MIDIController.NoteOn += PlayNote;
         MIDIController.NoteOff += NoteOff;
+
+        allNotes = noteLevels[GameController.level].allNotes.ToList();
     }
 
     private void Start()
@@ -79,32 +119,91 @@ public class NotesController : MonoBehaviour
         grandStaffDefaultDistX = firstParent.transform.localPosition.x;
         distanceY = grandStaffDistanceY;
 
-        //look at sasr again for scoring then implement something similar
-        //ensure users can play and this saves and same as flash card; track if they quit before and only save score if they finish a whole piece n save this value
-        //hook up total complete ui to stats
-        //write to file
-        //upload to server once you know how this is done
+        //midi setup screen for this and flash card
+        //add all positions? maybe figure out y position logic if not taking too long
+        //look at sasr again for scoring then implement something similar - finalise this
+        //finalise the scoring to upload to server
+        //implement help button
+        //IF TIME
         //flats/sharps (use the game logic)
         //calculate all ypositions in logic using .11 as diff between notes (this may change if you change size of staff etc)
-        //if time, add a more faded colour on the non notes part of staff
-        //if there is time then add eighth notes properly
+        //add a more faded colour on the non notes part of staff
+        //add eighth notes properly
+        //persist user index (accross all games/tests)
+    }
+
+    void Update()
+    {
+        if (StateController.currentState == StateController.States.end)
+        {
+            foreach (NotePrefab playedNote in playedNotes)
+            playedNote.gameObject.SetActive(true);
+        }
     }
 
     private void PlayNote(int note, float vel)
     {
         if (StateController.currentState == StateController.States.play)
         {
-            if (note == allNotes[noteIndex].note)
-                print("Correct!");
+            if (note == allNotes[noteIndex].note && CorrectPosition())
+            {
+                if (!allNotes[noteIndex].guessedCorrectly)
+                    SpawnNote(note, true);
+                allNotes[noteIndex].guessedCorrectly = true;
+            }
             else
-                print("Incorrect Note!");
-
-            //create a whole note prefab at the y played and at the current x position of the timeline - this x position can determine score
+            {
+                SpawnNote(note, false);
+            }
         }
+    }
+
+    private bool CorrectPosition()
+    {
+        //hard coding numbers - why is it .6f?
+        float timeLinePosX = timeLine.transform.position.x;
+        float currentNotePosX = spawedNotes[noteIndex].localPosition.x;
+
+        if (
+            timeLinePosX >= currentNotePosX &&
+            timeLinePosX < currentNotePosX + .6f
+        )
+        {
+            return true;
+        }
+        else
+            return false;
     }
 
     private void NoteOff(int note)
     {
+    }
+
+    private void SpawnNote(int note, bool wasCorrect)
+    {
+        //Spawn note and set text values
+        NotePrefab notePrefab = Instantiate(_notePrefab);
+        Transform newParent =
+            spawedNotes[noteIndex].GetComponent<NotePrefab>()._parent;
+        notePrefab.transform.SetParent(newParent, false);
+        notePrefab.SetNoteText(4, false);
+        notePrefab.SetLedgerLine(note, true, wasCorrect);
+        Color32 noteColour = wasCorrect ? Color.green : Color.red;
+        notePrefab.SetTextColour (noteColour);
+
+        //Set Position
+        float posX = timeLine.transform.position.x;
+        float posY = notePrefab.ySpawns[note % 12];
+        if (note < 60)
+        {
+            //using bass note
+            posY -= 1.783f;
+        }
+
+        notePrefab.transform.localPosition = new Vector3(posX - .2f, posY, 0);
+
+        playedNotes.Add (notePrefab);
+        notePrefab.gameObject.SetActive(false);
     }
 
     public void SpawnNotes()
@@ -133,8 +232,9 @@ public class NotesController : MonoBehaviour
 
             NotePrefab notePrefab =
                 Instantiate(_notePrefab, staffParent, false);
+            notePrefab._parent = staffParent;
             notePrefab.SetNoteText(note.noteLength, note.isEighth);
-            notePrefab.SetLedgerLine(note.note);
+            notePrefab.SetLedgerLine(note.note, false, false);
             float posY = notePrefab.ySpawns[note.note % 12] - staffYDist;
 
             if (note.note < 60)
@@ -199,24 +299,8 @@ public class NotesController : MonoBehaviour
                 startingXPos = defaultXPos;
                 newStaffBool = true;
             }
-        }
-    }
 
-    public void StartPlay()
-    {
-        StartCoroutine(PlayAlong());
-    }
-
-    private IEnumerator PlayAlong()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(AudioController.beatPerSec *
-                    allNotes[noteIndex].noteLength);
-            if (noteIndex < allNotes.Count - 1)
-                noteIndex++;
-            else
-                break;
+            spawedNotes.Add(notePrefab.transform);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Timeline;
 
 public class RhythmLine : MonoBehaviour
@@ -13,6 +14,12 @@ public class RhythmLine : MonoBehaviour
 
     [SerializeField]
     private TimeLine timeLine;
+
+    [SerializeField]
+    private NotesController notesController;
+
+    [SerializeField]
+    private CSVWriter csvWriter;
 
     private float defaultXPos;
 
@@ -27,7 +34,6 @@ public class RhythmLine : MonoBehaviour
     void Start()
     {
         defaultXPos = transform.position.x;
-        print (defaultXPos);
     }
 
     public void StartMoving()
@@ -45,10 +51,38 @@ public class RhythmLine : MonoBehaviour
         double intervalLine = interval / 10;
         double nextEventTimeLine = time + intervalLine;
 
+        print(NotesController.totalNotes +
+        1 -
+        NotesController.totalStaffs_Static);
+
         bool movedDown = false;
 
         while (this)
         {
+            if (
+                notesController.noteIndex <
+                notesController.spawedNotes.Count - 1
+            )
+            {
+                float nextNotePosX =
+                    notesController
+                        .spawedNotes[notesController.noteIndex + 1]
+                        .localPosition
+                        .x;
+                float timeLinePosX = timeLine.transform.position.x;
+                float staffPosY =
+                    notesController
+                        .spawedNotes[notesController.noteIndex + 1]
+                        .parent
+                        .localPosition
+                        .y;
+                float timeLinePosY = timeLine.transform.position.y;
+                if (timeLinePosX >= nextNotePosX && timeLinePosY == staffPosY)
+                {
+                    notesController.noteIndex++;
+                }
+            }
+
             time = AudioSettings.dspTime;
             if (time >= nextEventTime)
             {
@@ -86,12 +120,13 @@ public class RhythmLine : MonoBehaviour
                     NotesController.totalStaffs_Static
                 )
                 {
+                    csvWriter.WriteCSV(ScoreController.totalScore.ToString());
+                    csvWriter.UploadResults();
                     GameController.level++;
                     PlayerPrefs.SetInt("LevelsComplete", GameController.level);
                     StateController.currentState = StateController.States.end;
                     break;
                 }
-                print (movesMadeOnStaff);
             }
 
             if (time >= nextEventTimeLine)
@@ -99,7 +134,7 @@ public class RhythmLine : MonoBehaviour
                 if (movedDown)
                 {
                     nextEventTimeLine += intervalLine;
-                    timeLine.transform.position = new Vector3(-6.761f, yPos, 0); //using hard code here
+                    timeLine.transform.position = new Vector3(-6.761f, yPos, 1); //using hard code here
                     movedDown = false;
                 }
                 else

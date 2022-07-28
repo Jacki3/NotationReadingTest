@@ -10,6 +10,8 @@ public class NotePrefab : MonoBehaviour
 
     private TextMeshPro noteText;
 
+    public Transform _parent;
+
     public float[] ySpawns;
 
     void Awake()
@@ -38,7 +40,7 @@ public class NotePrefab : MonoBehaviour
         if (isEighth) noteText.text = "n";
     }
 
-    public void SetLedgerLine(int note)
+    public void SetLedgerLine(int note, bool isPlayedNote, bool correctGuess)
     {
         switch (note)
         {
@@ -46,5 +48,18 @@ public class NotePrefab : MonoBehaviour
                 ledgerText.text = "__";
                 break;
         }
+
+        if (isPlayedNote)
+        {
+            if (correctGuess)
+                ledgerText.color = Color.green;
+            else
+                ledgerText.color = Color.red;
+        }
+    }
+
+    public void SetTextColour(Color32 color)
+    {
+        noteText.color = color;
     }
 }

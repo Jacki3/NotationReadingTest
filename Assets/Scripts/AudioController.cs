@@ -29,6 +29,12 @@ public class AudioController : MonoBehaviour
         beatPerSecDouble = 60.0f / helmClock.bpm;
     }
 
+    void OnDisable()
+    {
+        MIDIController.NoteOn -= PlaySound;
+        MIDIController.NoteOff -= NoteOff;
+    }
+
     void Update()
     {
         beatPerSec = 60 / helmClock.bpm;

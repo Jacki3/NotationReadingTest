@@ -13,17 +13,4 @@ public class TimeLine : MonoBehaviour
     {
         defaultXPos = transform.position.x;
     }
-
-    void Update()
-    {
-        //using a hard coded number!
-        // 8.9 - end of the bar
-        // if (transform.position.x >= 8.9f)
-        // {
-        //     transform.position =
-        //         new Vector3(defaultXPos,
-        //             transform.position.y - NotesController.distanceY,
-        //             transform.position.z);
-        // }
-    }
 }

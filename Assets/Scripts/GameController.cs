@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -15,7 +17,7 @@ public class GameController : MonoBehaviour
     private RhythmLine rhythmLine;
 
     [SerializeField]
-    private TimeLine timeLine;
+    private Transform timeLine;
 
     [SerializeField]
     private AudioController audioController;
@@ -38,14 +40,22 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private int levelsNeededToFinishTest;
 
-    public static int level = 1;
+    public static int level = 0;
 
     void Start()
     {
         StateController.currentState = StateController.States.countdown;
-        PlayerPrefs.SetInt("LevelsComplete", level);
+        level = (PlayerPrefs.GetInt("LevelsComplete"));
 
-        print(PlayerPrefs.GetInt("LevelsComplete"));
+        int UILevel =
+            level >= levelsNeededToFinishTest
+                ? levelsNeededToFinishTest
+                : level + 1;
+
+        UIController
+            .UpdateTextUI(UIController.UITextComponents.levelsCompleteText,
+            UILevel + "/" + levelsNeededToFinishTest,
+            false);
     }
 
     void Update()
@@ -56,9 +66,10 @@ public class GameController : MonoBehaviour
             StateController.currentState = StateController.States.testComplete;
         }
 
+        if (Input.GetKey(KeyCode.Escape)) Application.Quit();
+
         if (StateController.currentState != StateController.States.testComplete)
         {
-            if (Input.GetKeyUp(KeyCode.Space)) Initialise();
             if (StateController.currentState == StateController.States.end)
             {
                 countDownTimeText.enabled = true;
@@ -70,22 +81,31 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            //hide it all as test is complete
-            print("test is complete!");
+            UIController.ShowTestComplete();
         }
     }
 
     public void Initialise()
     {
-        if (StateController.currentState == StateController.States.countdown)
+        if (StateController.currentState != StateController.States.testComplete)
         {
-            notesController.SpawnNotes();
-            lowBanner.SetActive(false);
-            StartCoroutine(ReadCountDown());
-        }
-        if (StateController.currentState == StateController.States.end)
-        {
-            Application.LoadLevel(Application.loadedLevel);
+            if (UIController.UserIndexFilled())
+            {
+                if (
+                    StateController.currentState ==
+                    StateController.States.countdown
+                )
+                {
+                    notesController.SpawnNotes();
+                    lowBanner.SetActive(false);
+                    StartCoroutine(ReadCountDown());
+                }
+                if (StateController.currentState == StateController.States.end)
+                {
+                    SceneManager
+                        .LoadScene(SceneManager.GetActiveScene().buildIndex);
+                }
+            }
         }
     }
 
@@ -150,7 +170,6 @@ public class GameController : MonoBehaviour
         StateController.currentState = StateController.States.play;
         audioController.PlayMusic();
         rhythmLine.StartMoving();
-        notesController.StartPlay();
     }
 
     public void Exit()
