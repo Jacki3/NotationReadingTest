@@ -7,12 +7,18 @@ public class CSVWriter : MonoBehaviour
 
     private string fileName;
 
+    private string screenGrabName;
+
+    private string wholeFilePathScreen;
+
     public void WriteCSV(string data)
     {
         fileName =
             CoreElements.i.userIndex +
             "_NoteReadingTest_Test_" +
             GameController.level +
+            "_Results_" +
+            System.DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") +
             ".csv";
         wholeFilePath = Application.dataPath + "/" + fileName;
 
@@ -41,5 +47,24 @@ public class CSVWriter : MonoBehaviour
             "/" +
             fileName,
             @wholeFilePath);
+        ftpClient
+            .upload("/Study4/NoteReadingResults/" +
+            CoreElements.i.userIndex.ToString() +
+            "/" +
+            screenGrabName,
+            @wholeFilePathScreen);
+    }
+
+    public void ScreenGrab()
+    {
+        screenGrabName =
+            CoreElements.i.userIndex +
+            "_NoteReadingTest_Test_" +
+            GameController.level +
+            "_Screenshot_" +
+            System.DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") +
+            ".png";
+        wholeFilePathScreen = Application.dataPath + "/" + screenGrabName;
+        ScreenCapture.CaptureScreenshot((wholeFilePathScreen), 2);
     }
 }

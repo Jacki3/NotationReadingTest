@@ -11,6 +11,14 @@ public class CoreElements : MonoBehaviour
 
     public GameObject testCompleteScreen;
 
+    public GameObject helpScreen;
+
+    public float perfectDist = .05f;
+
+    public float medDist = .11f;
+
+    public float slowDist = .22f;
+
     public UIText[] textComponents;
 
     [System.Serializable]

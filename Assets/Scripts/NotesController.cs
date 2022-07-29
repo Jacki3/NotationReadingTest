@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Assertions.Comparers;
 using UnityEngine.SceneManagement;
 
 public class NotesController : MonoBehaviour
@@ -38,10 +39,10 @@ public class NotesController : MonoBehaviour
     private TimeLine timeLine;
 
     [SerializeField]
-    private List<Note> allNotes = new List<Note>();
+    public List<Note> allNotes = new List<Note>();
 
     [SerializeField]
-    private List<AllNotes> noteLevels = new List<AllNotes>();
+    public List<AllNotes> noteLevels = new List<AllNotes>();
 
     private float grandStaffDefaultDistY;
 
@@ -61,12 +62,14 @@ public class NotesController : MonoBehaviour
 
     public int noteIndex = 0;
 
+    public int incorrectPerNote;
+
     public List<Transform> spawedNotes = new List<Transform>();
 
     private List<NotePrefab> playedNotes = new List<NotePrefab>();
 
     [Serializable]
-    private class Note
+    public class Note
     {
         public int note;
 
@@ -74,11 +77,15 @@ public class NotesController : MonoBehaviour
 
         public bool guessedCorrectly;
 
+        public int incorretGuessesMade;
+
+        public string speed;
+
         public bool isEighth;
     }
 
     [Serializable]
-    private class AllNotes
+    public class AllNotes
     {
         public string levelName;
 
@@ -119,11 +126,22 @@ public class NotesController : MonoBehaviour
         grandStaffDefaultDistX = firstParent.transform.localPosition.x;
         distanceY = grandStaffDistanceY;
 
-        //midi setup screen for this and flash card
+        string currentTitle = noteLevels[GameController.level].levelName;
+        UIController
+            .UpdateTextUI(UIController.UITextComponents.titleText,
+            currentTitle,
+            false);
+
+        //BY 11!
+        //EASY LAST MIN
+        //calculate score based on incorrect guesses also
         //add all positions? maybe figure out y position logic if not taking too long
-        //look at sasr again for scoring then implement something similar - finalise this
-        //finalise the scoring to upload to server
-        //implement help button
+        //build out 3/4 actual tests w/ backing tracks
+        //midi setup screen finalise - actual text setup then apply to flash card and midi setup to game
+        // add a voice over count in + finalise sounds
+        //WEEKEND/FINALS
+        //upload img properly
+        //check back the note index being ++ because of resetting incorrect notes - is this correcT? needs BIG tests!
         //IF TIME
         //flats/sharps (use the game logic)
         //calculate all ypositions in logic using .11 as diff between notes (this may change if you change size of staff etc)
@@ -145,14 +163,20 @@ public class NotesController : MonoBehaviour
     {
         if (StateController.currentState == StateController.States.play)
         {
-            if (note == allNotes[noteIndex].note && CorrectPosition())
+            if (note == allNotes[noteIndex + 1].note && CorrectPosition())
             {
-                if (!allNotes[noteIndex].guessedCorrectly)
+                if (!allNotes[noteIndex + 1].guessedCorrectly)
+                {
+                    ScoreOnDistance();
+                    ScoreController.totalCorrect++;
                     SpawnNote(note, true);
-                allNotes[noteIndex].guessedCorrectly = true;
+                }
+                allNotes[noteIndex + 1].guessedCorrectly = true;
             }
             else
             {
+                ScoreController.totalIncorrect++;
+                incorrectPerNote++;
                 SpawnNote(note, false);
             }
         }
@@ -162,7 +186,7 @@ public class NotesController : MonoBehaviour
     {
         //hard coding numbers - why is it .6f?
         float timeLinePosX = timeLine.transform.position.x;
-        float currentNotePosX = spawedNotes[noteIndex].localPosition.x;
+        float currentNotePosX = spawedNotes[noteIndex + 1].localPosition.x;
 
         if (
             timeLinePosX >= currentNotePosX &&
@@ -173,6 +197,33 @@ public class NotesController : MonoBehaviour
         }
         else
             return false;
+    }
+
+    private float ScoreOnDistance()
+    {
+        var vectorToTarget =
+            spawedNotes[noteIndex + 1].position - timeLine.transform.position;
+        vectorToTarget.y = 0;
+        var distanceToTarget = vectorToTarget.magnitude;
+        if (distanceToTarget < CoreElements.i.perfectDist)
+        {
+            allNotes[noteIndex + 1].speed = "Perfect";
+            ScoreController.AddScore(10);
+            print("Perfect!");
+        }
+        else if (distanceToTarget < CoreElements.i.medDist)
+        {
+            allNotes[noteIndex + 1].speed = "Med";
+            ScoreController.AddScore(5);
+            print("Med!");
+        }
+        else
+        {
+            allNotes[noteIndex + 1].speed = "Slow";
+            ScoreController.AddScore(1);
+            print("Slow!");
+        }
+        return distanceToTarget;
     }
 
     private void NoteOff(int note)

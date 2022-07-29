@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using AudioHelm;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Timeline;
@@ -79,6 +81,21 @@ public class RhythmLine : MonoBehaviour
                 float timeLinePosY = timeLine.transform.position.y;
                 if (timeLinePosX >= nextNotePosX && timeLinePosY == staffPosY)
                 {
+                    notesController
+                        .allNotes[notesController.noteIndex]
+                        .incorretGuessesMade = notesController.incorrectPerNote;
+                }
+                float nextNotePosXPrev =
+                    notesController
+                        .spawedNotes[notesController.noteIndex + 1]
+                        .localPosition
+                        .x;
+                if (
+                    timeLinePosX >= nextNotePosXPrev + .6f &&
+                    timeLinePosY == staffPosY
+                )
+                {
+                    notesController.incorrectPerNote = 0;
                     notesController.noteIndex++;
                 }
             }
@@ -120,11 +137,10 @@ public class RhythmLine : MonoBehaviour
                     NotesController.totalStaffs_Static
                 )
                 {
-                    csvWriter.WriteCSV(ScoreController.totalScore.ToString());
-                    csvWriter.UploadResults();
+                    StateController.currentState = StateController.States.end;
                     GameController.level++;
                     PlayerPrefs.SetInt("LevelsComplete", GameController.level);
-                    StateController.currentState = StateController.States.end;
+                    WriteResults();
                     break;
                 }
             }
@@ -145,5 +161,51 @@ public class RhythmLine : MonoBehaviour
             }
             yield return null;
         }
+    }
+
+    private void WriteResults()
+    {
+        int index = 1;
+        foreach (NotesController.Note note in notesController.allNotes)
+        {
+            string text = "Note" + index + ": " + note.note + ",";
+            index++;
+            csvWriter.WriteCSV (text);
+        }
+        csvWriter.WriteCSV(",");
+        csvWriter.WriteCSV("Overall Score,");
+        csvWriter.WriteCSV("Total Correct,");
+        csvWriter.WriteCSV("Total Incorrect");
+        csvWriter.WriteCSV(System.Environment.NewLine);
+        foreach (NotesController.Note note in notesController.allNotes)
+        {
+            string correctText =
+                note.guessedCorrectly ? "Correct" : "Incorrect";
+            string text = correctText + ",";
+            csvWriter.WriteCSV (text);
+        }
+        csvWriter.WriteCSV(",");
+        csvWriter.WriteCSV(ScoreController.totalScore.ToString() + ",");
+        csvWriter.WriteCSV(ScoreController.totalCorrect.ToString() + ",");
+        csvWriter.WriteCSV(ScoreController.totalIncorrect.ToString());
+        csvWriter.WriteCSV(System.Environment.NewLine);
+        foreach (NotesController.Note note in notesController.allNotes)
+        {
+            string text = note.speed + ",";
+            csvWriter.WriteCSV (text);
+        }
+        csvWriter.WriteCSV(System.Environment.NewLine);
+        foreach (NotesController.Note note in notesController.allNotes)
+        {
+            string text = note.incorretGuessesMade + ",";
+            csvWriter.WriteCSV (text);
+        }
+        Invoke("UploadResults", .1f);
+    }
+
+    private void UploadResults()
+    {
+        csvWriter.ScreenGrab();
+        csvWriter.UploadResults();
     }
 }

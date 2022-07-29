@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Runtime.InteropServices;
 using TMPro;
 using UnityEditor;
@@ -42,9 +43,12 @@ public class GameController : MonoBehaviour
 
     public static int level = 0;
 
+    private bool helpShown;
+
     void Start()
     {
         StateController.currentState = StateController.States.countdown;
+        PlayerPrefs.SetInt("LevelsComplete", 0);
         level = (PlayerPrefs.GetInt("LevelsComplete"));
 
         int UILevel =
@@ -170,6 +174,37 @@ public class GameController : MonoBehaviour
         StateController.currentState = StateController.States.play;
         audioController.PlayMusic();
         rhythmLine.StartMoving();
+    }
+
+    public void ShowHelpScreen()
+    {
+        if (!helpShown)
+        {
+            helpShown = true;
+            CoreElements.i.helpScreen.SetActive(true);
+            UIController
+                .UpdateTextUI(UIController.UITextComponents.helpButtonText,
+                "Back",
+                false);
+            UIController
+                .UpdateTextUI(UIController.UITextComponents.titleText,
+                "Help Screen",
+                false);
+        }
+        else
+        {
+            helpShown = false;
+            CoreElements.i.helpScreen.SetActive(false);
+            UIController
+                .UpdateTextUI(UIController.UITextComponents.helpButtonText,
+                "Help",
+                false);
+            string currentTitle = notesController.noteLevels[level].levelName;
+            UIController
+                .UpdateTextUI(UIController.UITextComponents.titleText,
+                currentTitle,
+                false);
+        }
     }
 
     public void Exit()

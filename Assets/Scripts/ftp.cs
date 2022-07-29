@@ -40,7 +40,6 @@ class ftp
 
             /* When in doubt, use these options */
             ftpRequest.UseBinary = true;
-            ftpRequest.UsePassive = true;
             ftpRequest.KeepAlive = true;
 
             /* Specify the Type of FTP Request */

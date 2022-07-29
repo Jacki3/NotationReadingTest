@@ -7,7 +7,9 @@ public static class UIController
     public enum UITextComponents
     {
         levelsCompleteText,
-        warningText
+        warningText,
+        titleText,
+        helpButtonText
     }
 
     public static void UpdateTextUI(
