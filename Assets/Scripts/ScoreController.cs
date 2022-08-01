@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public static class ScoreController
 {
-    public static int totalScore;
+    public static float totalScore;
 
     public static int totalCorrect;
 
@@ -28,7 +28,7 @@ public static class ScoreController
         totalIncorrect = 0;
     }
 
-    public static void AddScore(int scoreToAdd)
+    public static void AddScore(float scoreToAdd)
     {
         totalScore += scoreToAdd;
     }

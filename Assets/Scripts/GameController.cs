@@ -41,6 +41,12 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private int levelsNeededToFinishTest;
 
+    [SerializeField]
+    private AudioSource countDownSource;
+
+    [SerializeField]
+    private AudioClip[] countDownClips;
+
     public static int level = 0;
 
     private bool helpShown;
@@ -48,7 +54,6 @@ public class GameController : MonoBehaviour
     void Start()
     {
         StateController.currentState = StateController.States.countdown;
-        PlayerPrefs.SetInt("LevelsComplete", 0);
         level = (PlayerPrefs.GetInt("LevelsComplete"));
 
         int UILevel =
@@ -58,7 +63,7 @@ public class GameController : MonoBehaviour
 
         UIController
             .UpdateTextUI(UIController.UITextComponents.levelsCompleteText,
-            UILevel + "/" + levelsNeededToFinishTest,
+            "Exercises Completed: " + UILevel + "/" + levelsNeededToFinishTest,
             false);
     }
 
@@ -135,9 +140,11 @@ public class GameController : MonoBehaviour
     IEnumerator DelayStart()
     {
         int timeWaited = 0;
+        int countIndex = 0;
         while (true)
         {
             timeWaited++;
+            countDownSource.PlayOneShot(countDownClips[countIndex]);
             int timeWaitedText = (countInTime + 1) - timeWaited;
             countDownTimeText.text = timeWaitedText.ToString();
             if (timeWaited >= countInTime)
@@ -149,6 +156,7 @@ public class GameController : MonoBehaviour
                 break;
             }
             yield return new WaitForSeconds(AudioController.beatPerSec);
+            countIndex++;
         }
     }
 

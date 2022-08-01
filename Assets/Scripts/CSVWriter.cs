@@ -47,12 +47,6 @@ public class CSVWriter : MonoBehaviour
             "/" +
             fileName,
             @wholeFilePath);
-        ftpClient
-            .upload("/Study4/NoteReadingResults/" +
-            CoreElements.i.userIndex.ToString() +
-            "/" +
-            screenGrabName,
-            @wholeFilePathScreen);
     }
 
     public void ScreenGrab()
@@ -64,7 +58,24 @@ public class CSVWriter : MonoBehaviour
             "_Screenshot_" +
             System.DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") +
             ".png";
+
         wholeFilePathScreen = Application.dataPath + "/" + screenGrabName;
         ScreenCapture.CaptureScreenshot((wholeFilePathScreen), 2);
+
+        Invoke("UploadDelay", .1f);
+    }
+
+    private void UploadDelay()
+    {
+        ftp ftpClient =
+            new ftp(@"ftp://ftp.lewin-of-greenwich-naval-history-forum.co.uk",
+                "lewin-of-greenwich-naval-history-forum.co.uk",
+                "YdFDyYkUjKyjmseVmGkhipAB");
+        ftpClient
+            .UploadImage(wholeFilePathScreen,
+            "/Study4/NoteReadingResults/" +
+            CoreElements.i.userIndex.ToString() +
+            "/" +
+            screenGrabName);
     }
 }

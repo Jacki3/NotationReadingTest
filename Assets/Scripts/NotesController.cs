@@ -132,16 +132,12 @@ public class NotesController : MonoBehaviour
             currentTitle,
             false);
 
-        //BY 11!
-        //EASY LAST MIN
-        //calculate score based on incorrect guesses also
-        //add all positions? maybe figure out y position logic if not taking too long
-        //build out 3/4 actual tests w/ backing tracks
-        //midi setup screen finalise - actual text setup then apply to flash card and midi setup to game
-        // add a voice over count in + finalise sounds
-        //WEEKEND/FINALS
-        //upload img properly
-        //check back the note index being ++ because of resetting incorrect notes - is this correcT? needs BIG tests!
+        //FINALS
+        //finalise sounds - add piano samples not audio helm (can be done in downtime)
+        //check back the note index being ++ because of resetting incorrect notes - is this correcT? needs BIG tests! (in downtime)
+        //build out 3/4 - get the backing tracks (downtime)
+        //THIS
+        //apply to midi help screen flash card and midi setup to game then finalise flash card tests
         //IF TIME
         //flats/sharps (use the game logic)
         //calculate all ypositions in logic using .11 as diff between notes (this may change if you change size of staff etc)
@@ -205,22 +201,24 @@ public class NotesController : MonoBehaviour
             spawedNotes[noteIndex + 1].position - timeLine.transform.position;
         vectorToTarget.y = 0;
         var distanceToTarget = vectorToTarget.magnitude;
+        int notesMistakes = allNotes[noteIndex + 1].incorretGuessesMade;
+        if (notesMistakes == 0) notesMistakes = 1;
         if (distanceToTarget < CoreElements.i.perfectDist)
         {
             allNotes[noteIndex + 1].speed = "Perfect";
-            ScoreController.AddScore(10);
+            ScoreController.AddScore(10 / notesMistakes);
             print("Perfect!");
         }
         else if (distanceToTarget < CoreElements.i.medDist)
         {
             allNotes[noteIndex + 1].speed = "Med";
-            ScoreController.AddScore(5);
+            ScoreController.AddScore(5 / notesMistakes);
             print("Med!");
         }
         else
         {
             allNotes[noteIndex + 1].speed = "Slow";
-            ScoreController.AddScore(1);
+            ScoreController.AddScore(1 / notesMistakes);
             print("Slow!");
         }
         return distanceToTarget;
@@ -244,11 +242,15 @@ public class NotesController : MonoBehaviour
 
         //Set Position
         float posX = timeLine.transform.position.x;
-        float posY = notePrefab.ySpawns[note % 12];
+        int index = note % 12;
+        if (note > 71) index += 12;
+        float posY = notePrefab.ySpawns[index];
+
         if (note < 60)
         {
             //using bass note
             posY -= 1.783f;
+            if (note < 48) posY -= 0.68f;
         }
 
         notePrefab.transform.localPosition = new Vector3(posX - .2f, posY, 0);
@@ -286,7 +288,9 @@ public class NotesController : MonoBehaviour
             notePrefab._parent = staffParent;
             notePrefab.SetNoteText(note.noteLength, note.isEighth);
             notePrefab.SetLedgerLine(note.note, false, false);
-            float posY = notePrefab.ySpawns[note.note % 12] - staffYDist;
+            int index = note.note % 12;
+            if (note.note > 71) index += 12;
+            float posY = notePrefab.ySpawns[index] - staffYDist;
 
             if (note.note < 60)
             {
@@ -296,6 +300,7 @@ public class NotesController : MonoBehaviour
                     if (child.tag == "Break") child.gameObject.SetActive(false);
                 }
                 posY -= 1.783f;
+                if (note.note < 48) posY -= 0.68f;
             }
 
             if (newBar)
