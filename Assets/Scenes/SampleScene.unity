@@ -2255,7 +2255,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -7927406032990097657, guid: 0aac4bc44d562924cb208dcf3ee0037c, type: 2}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 1272592877}
   m_PlayOnAwake: 1
   m_Volume: 0.5
   m_Pitch: 1
@@ -3205,6 +3205,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1179916371}
   m_CullTransparentMesh: 0
+--- !u!83 &1272592877
+AudioClip:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: helm
+  m_LoadType: 0
+  m_Channels: 1
+  m_Frequency: 48000
+  m_BitsPerSample: 32
+  m_Length: 0
+  m_IsTrackerFormat: 0
+  m_Ambisonic: 0
+  m_SubsoundIndex: 0
+  m_PreloadAudioData: 1
+  m_LoadInBackground: 0
+  m_Legacy3D: 0
+  m_Resource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_CompressionFormat: 0
+  m_EditorResource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_EditorCompressionFormat: 0
 --- !u!1 &1407975957
 GameObject:
   m_ObjectHideFlags: 0
@@ -3895,6 +3923,7 @@ MonoBehaviour:
   defaultXDistance: 1
   barDistance: 0.35
   grandStaffDistanceY: 5
+  preTest: 1
   barLine: {fileID: 9113583139701814159, guid: 6dd231a6cb05e42449f44079c7b29a1a, type: 3}
   grandStaff: {fileID: 9048078154247209244, guid: 428642e5525bf784fb142e107bf5821f, type: 3}
   firstParent: {fileID: 1978852728}
@@ -5204,7 +5233,7 @@ MonoBehaviour:
   countDownTimeText: {fileID: 1731404984}
   lowBanner: {fileID: 869846467}
   playButton: {fileID: 1741115113}
-  levelsNeededToFinishTest: 3
+  levelsNeededToFinishTest: 4
   countDownSource: {fileID: 2063727384}
   countDownClips:
   - {fileID: 8300000, guid: c80dafb7a74a22840943c9be4bdef8df, type: 3}
@@ -5265,6 +5294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1980e6012c9e72246b16fe83a2211c46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testState: 
 --- !u!82 &2063727384
 AudioSource:
   m_ObjectHideFlags: 0

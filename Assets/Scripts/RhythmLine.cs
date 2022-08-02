@@ -165,6 +165,7 @@ public class RhythmLine : MonoBehaviour
 
     private void WriteResults()
     {
+        csvWriter.testState = notesController.preTest ? "preTest" : "postTest";
         int index = 1;
         foreach (NotesController.Note note in notesController.allNotes)
         {

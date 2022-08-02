@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class CSVWriter : MonoBehaviour
 {
+    public string testState = "preTest";
+
     private string wholeFilePath;
 
     private string fileName;
@@ -15,7 +17,9 @@ public class CSVWriter : MonoBehaviour
     {
         fileName =
             CoreElements.i.userIndex +
-            "_NoteReadingTest_Test_" +
+            "_NoteReadingTest_" +
+            testState +
+            "_" +
             GameController.level +
             "_Results_" +
             System.DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") +
@@ -53,7 +57,9 @@ public class CSVWriter : MonoBehaviour
     {
         screenGrabName =
             CoreElements.i.userIndex +
-            "_NoteReadingTest_Test_" +
+            "_NoteReadingTest_" +
+            testState +
+            "_" +
             GameController.level +
             "_Screenshot_" +
             System.DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") +
@@ -62,7 +68,7 @@ public class CSVWriter : MonoBehaviour
         wholeFilePathScreen = Application.dataPath + "/" + screenGrabName;
         ScreenCapture.CaptureScreenshot((wholeFilePathScreen), 2);
 
-        Invoke("UploadDelay", .1f);
+        Invoke("UploadDelay", .5f);
     }
 
     private void UploadDelay()

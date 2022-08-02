@@ -23,6 +23,8 @@ public class NotesController : MonoBehaviour
     private float grandStaffDistanceY;
 
     [Header("Components")]
+    public bool preTest = true;
+
     [SerializeField]
     private GameObject barLine;
 
@@ -126,16 +128,18 @@ public class NotesController : MonoBehaviour
         grandStaffDefaultDistX = firstParent.transform.localPosition.x;
         distanceY = grandStaffDistanceY;
 
-        string currentTitle = noteLevels[GameController.level].levelName;
+        int currentLevel = (PlayerPrefs.GetInt("LevelsComplete"));
+        string currentTitle = noteLevels[currentLevel].levelName;
         UIController
             .UpdateTextUI(UIController.UITextComponents.titleText,
             currentTitle,
             false);
 
         //FINALS
+        //final test screenshot shows the end screen
         //finalise sounds - add piano samples not audio helm (can be done in downtime)
-        //check back the note index being ++ because of resetting incorrect notes - is this correcT? needs BIG tests! (in downtime)
         //build out 3/4 - get the backing tracks (downtime)
+        //check back the note index being ++ because of resetting incorrect notes - is this correcT? needs BIG tests! (in downtime)
         //THIS
         //apply to midi help screen flash card and midi setup to game then finalise flash card tests
         //IF TIME

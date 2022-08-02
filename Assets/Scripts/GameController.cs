@@ -54,6 +54,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         StateController.currentState = StateController.States.countdown;
+        PlayerPrefs.SetInt("LevelsComplete", 0);
         level = (PlayerPrefs.GetInt("LevelsComplete"));
 
         int UILevel =
