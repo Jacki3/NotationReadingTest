@@ -136,7 +136,7 @@ public class NotesController : MonoBehaviour
             false);
 
         //FINALS
-        //final test screenshot shows the end screen
+        //final test screenshot shows the end screen (downtime)
         //finalise sounds - add piano samples not audio helm (can be done in downtime)
         //build out 3/4 - get the backing tracks (downtime)
         //check back the note index being ++ because of resetting incorrect notes - is this correcT? needs BIG tests! (in downtime)
