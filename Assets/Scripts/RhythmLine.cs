@@ -53,10 +53,6 @@ public class RhythmLine : MonoBehaviour
         double intervalLine = interval / 10;
         double nextEventTimeLine = time + intervalLine;
 
-        print(NotesController.totalNotes +
-        1 -
-        NotesController.totalStaffs_Static);
-
         bool movedDown = false;
 
         while (this)

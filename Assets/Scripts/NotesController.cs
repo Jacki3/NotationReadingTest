@@ -163,21 +163,24 @@ public class NotesController : MonoBehaviour
     {
         if (StateController.currentState == StateController.States.play)
         {
-            if (note == allNotes[noteIndex + 1].note && CorrectPosition())
+            if (noteIndex <= totalNotes + 10 - 1)
             {
-                if (!allNotes[noteIndex + 1].guessedCorrectly)
+                if (note == allNotes[noteIndex + 1].note && CorrectPosition())
                 {
-                    ScoreOnDistance();
-                    ScoreController.totalCorrect++;
-                    SpawnNote(note, true);
+                    if (!allNotes[noteIndex + 1].guessedCorrectly)
+                    {
+                        ScoreOnDistance();
+                        ScoreController.totalCorrect++;
+                        SpawnNote(note, true);
+                    }
+                    allNotes[noteIndex + 1].guessedCorrectly = true;
                 }
-                allNotes[noteIndex + 1].guessedCorrectly = true;
-            }
-            else
-            {
-                ScoreController.totalIncorrect++;
-                incorrectPerNote++;
-                SpawnNote(note, false);
+                else
+                {
+                    ScoreController.totalIncorrect++;
+                    incorrectPerNote++;
+                    SpawnNote(note, false);
+                }
             }
         }
     }
@@ -260,7 +263,7 @@ public class NotesController : MonoBehaviour
         notePrefab.transform.localPosition = new Vector3(posX - .2f, posY, 0);
 
         playedNotes.Add (notePrefab);
-        notePrefab.gameObject.SetActive(false);
+        notePrefab.gameObject.SetActive(true);
     }
 
     public void SpawnNotes()

@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using TMPro;
-using UnityEditor.Profiling.Memory.Experimental;
+﻿using TMPro;
 using UnityEngine;
 
 public class NotePrefab : MonoBehaviour
