@@ -47,11 +47,11 @@ public class AudioController : MonoBehaviour
 
     private void PlaySound(int note, float velocity)
     {
-        helmController.NoteOn (note, velocity);
+        // helmController.NoteOn (note, velocity);
     }
 
     private void NoteOff(int note)
     {
-        helmController.NoteOff (note);
+        // helmController.NoteOff (note);
     }
 }
