@@ -54,6 +54,8 @@ public class GameController : MonoBehaviour
     void Start()
     {
         StateController.currentState = StateController.States.countdown;
+
+        // PlayerPrefs.SetInt("LevelsComplete", 0);
         level = (PlayerPrefs.GetInt("LevelsComplete"));
 
         int UILevel =
@@ -65,6 +67,12 @@ public class GameController : MonoBehaviour
             .UpdateTextUI(UIController.UITextComponents.levelsCompleteText,
             "Exercises Completed: " + UILevel + "/" + levelsNeededToFinishTest,
             false);
+
+        if (PlayerPrefs.HasKey("UserID"))
+        {
+            string userID = PlayerPrefs.GetString("UserID");
+            CoreElements.i.indexField.text = userID;
+        }
     }
 
     void Update()
@@ -180,7 +188,8 @@ public class GameController : MonoBehaviour
     private void StartTest()
     {
         StateController.currentState = StateController.States.play;
-        audioController.PlayMusic();
+        AudioClip currentSong = notesController.noteLevels[level].song;
+        audioController.PlayMusic (currentSong);
         rhythmLine.StartMoving();
     }
 

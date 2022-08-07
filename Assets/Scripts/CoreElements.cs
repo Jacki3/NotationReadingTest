@@ -13,6 +13,8 @@ public class CoreElements : MonoBehaviour
 
     public GameObject helpScreen;
 
+    public GameObject lowBanner;
+
     public float perfectDist = .05f;
 
     public float medDist = .11f;

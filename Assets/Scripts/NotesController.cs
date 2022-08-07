@@ -91,6 +91,8 @@ public class NotesController : MonoBehaviour
     {
         public string levelName;
 
+        public AudioClip song;
+
         public List<Note> allNotes = new List<Note>();
     }
 
@@ -117,8 +119,6 @@ public class NotesController : MonoBehaviour
     {
         MIDIController.NoteOn += PlayNote;
         MIDIController.NoteOff += NoteOff;
-
-        allNotes = noteLevels[GameController.level].allNotes.ToList();
     }
 
     private void Start()
@@ -127,7 +127,6 @@ public class NotesController : MonoBehaviour
         grandStaffDefaultDistY = firstParent.transform.localPosition.y;
         grandStaffDefaultDistX = firstParent.transform.localPosition.x;
         distanceY = grandStaffDistanceY;
-
         int currentLevel = (PlayerPrefs.GetInt("LevelsComplete"));
         string currentTitle = noteLevels[currentLevel].levelName;
         UIController
@@ -136,18 +135,12 @@ public class NotesController : MonoBehaviour
             false);
 
         //FINALS
-        //final test screenshot shows the end screen (downtime)
-        //finalise sounds - add piano samples not audio helm (can be done in downtime)
         //build out 3/4 - get the backing tracks (downtime)
         //check back the note index being ++ because of resetting incorrect notes - is this correcT? needs BIG tests! (in downtime)
-        //THIS
-        //apply to midi help screen flash card and midi setup to game then finalise flash card tests
         //IF TIME
         //flats/sharps (use the game logic)
-        //calculate all ypositions in logic using .11 as diff between notes (this may change if you change size of staff etc)
         //add a more faded colour on the non notes part of staff
         //add eighth notes properly
-        //persist user index (accross all games/tests)
     }
 
     void Update()
@@ -268,6 +261,7 @@ public class NotesController : MonoBehaviour
 
     public void SpawnNotes()
     {
+        allNotes = noteLevels[GameController.level].allNotes.ToList();
         int notesInBar = 0;
         int notesInStaff = 0;
         float staffYDist = 0;
@@ -339,7 +333,7 @@ public class NotesController : MonoBehaviour
                 float barYPos =
                     newBarLine.transform.localPosition.y - staffYDist;
                 newBarLine.transform.localPosition =
-                    new Vector3(barXPos, barYPos, 0);
+                    new Vector3(barXPos, barYPos, -.5f);
                 notesInBar = 0;
             }
 

@@ -34,6 +34,7 @@ public static class UIController
         {
             UpdateTextUI(UITextComponents.warningText, "", false);
             CoreElements.i.userIndex = indexField.text;
+            PlayerPrefs.SetString("UserID", indexField.text);
             return true;
         }
         else
@@ -47,6 +48,7 @@ public static class UIController
 
     public static void ShowTestComplete()
     {
+        CoreElements.i.lowBanner.SetActive(false);
         CoreElements.i.testCompleteScreen.SetActive(true);
     }
 }

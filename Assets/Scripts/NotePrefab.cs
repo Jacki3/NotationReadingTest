@@ -113,9 +113,15 @@ public class NotePrefab : MonoBehaviour
         if (isPlayedNote)
         {
             if (correctGuess)
+            {
                 ledgerText.color = Color.green;
+                upsideNote.color = Color.green;
+            }
             else
+            {
                 ledgerText.color = Color.red;
+                upsideNote.color = Color.red;
+            }
         }
     }
 

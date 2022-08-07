@@ -8,7 +8,8 @@ public class SoundController : MonoBehaviour
 
     void Awake()
     {
-        MIDIController.NoteOn += PlaySound;
+        // MIDIController.NoteOn += PlaySound;
+        // MIDIController.NoteOff += NoteOff;
     }
 
     public void PlaySound(int note, float vel)
@@ -21,5 +22,9 @@ public class SoundController : MonoBehaviour
         if (noteSound != null) destroyOverTime.lifeTime = noteSound.length / 3;
         AudioSource audioSource = soundGameObject.AddComponent<AudioSource>();
         if (noteSound != null) audioSource.PlayOneShot(noteSound);
+    }
+
+    public void NoteOff(int note)
+    {
     }
 }

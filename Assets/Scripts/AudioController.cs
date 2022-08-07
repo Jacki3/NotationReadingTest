@@ -31,8 +31,6 @@ public class AudioController : MonoBehaviour
 
     void OnDisable()
     {
-        MIDIController.NoteOn -= PlaySound;
-        MIDIController.NoteOff -= NoteOff;
     }
 
     void Update()
@@ -40,18 +38,19 @@ public class AudioController : MonoBehaviour
         beatPerSec = 60 / helmClock.bpm;
     }
 
-    public void PlayMusic()
+    public void PlayMusic(AudioClip song)
     {
+        audioSource.clip = song;
         audioSource.Play();
     }
 
     private void PlaySound(int note, float velocity)
     {
-        // helmController.NoteOn (note, velocity);
+        helmController.NoteOn (note, velocity);
     }
 
     private void NoteOff(int note)
     {
-        // helmController.NoteOff (note);
+        helmController.NoteOff (note);
     }
 }
