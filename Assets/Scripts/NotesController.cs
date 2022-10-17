@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
+using Malee.List;
 using UnityEngine;
-using UnityEngine.Assertions.Comparers;
 using UnityEngine.SceneManagement;
 
 public class NotesController : MonoBehaviour
@@ -45,6 +43,12 @@ public class NotesController : MonoBehaviour
 
     [SerializeField]
     public List<AllNotes> noteLevels = new List<AllNotes>();
+
+    [Reorderable]
+    public NoteLevelList list;
+
+    [System.Serializable]
+    public class NoteLevelList : ReorderableArray<AllNotes> { }
 
     private float grandStaffDefaultDistY;
 
@@ -128,7 +132,7 @@ public class NotesController : MonoBehaviour
         grandStaffDefaultDistX = firstParent.transform.localPosition.x;
         distanceY = grandStaffDistanceY;
         int currentLevel = (PlayerPrefs.GetInt("LevelsComplete"));
-        string currentTitle = noteLevels[currentLevel].levelName;
+        string currentTitle = list[currentLevel].levelName;
         UIController
             .UpdateTextUI(UIController.UITextComponents.titleText,
             currentTitle,
@@ -262,7 +266,7 @@ public class NotesController : MonoBehaviour
 
     public void SpawnNotes()
     {
-        allNotes = noteLevels[GameController.level].allNotes.ToList();
+        allNotes = list[GameController.level].allNotes.ToList();
         int notesInBar = 0;
         int notesInStaff = 0;
         float staffYDist = 0;

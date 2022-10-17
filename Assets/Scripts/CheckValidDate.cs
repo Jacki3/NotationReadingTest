@@ -25,11 +25,11 @@ public class CheckValidDate : MonoBehaviour
                 "YdFDyYkUjKyjmseVmGkhipAB");
 
         string downloadLocation =
-            Application.dataPath+ "/" + fileName;
+            Application.persistentDataPath + "/" + fileName;
         ftpClient.download("Study4/endDate.txt", @downloadLocation);
 
         StreamReader sr =
-            new StreamReader(Application.dataPath + "/" + fileName);
+            new StreamReader(Application.persistentDataPath + "/" + fileName);
         string contents = sr.ReadToEnd();
         sr.Close();
 
@@ -38,12 +38,12 @@ public class CheckValidDate : MonoBehaviour
 
         if (endDate >= today)
         {
-            File.Delete(Application.dataPath + "/" + fileName);
+            File.Delete(Application.persistentDataPath + "/" + fileName);
             return true;
         }
         else
         {
-            File.Delete(Application.dataPath + "/" + fileName);
+            File.Delete(Application.persistentDataPath + "/" + fileName);
             errorScreen.SetActive(true);
             return false;
         }

@@ -188,7 +188,7 @@ public class GameController : MonoBehaviour
     private void StartTest()
     {
         StateController.currentState = StateController.States.play;
-        AudioClip currentSong = notesController.noteLevels[level].song;
+        AudioClip currentSong = notesController.list[level].song;
         audioController.PlayMusic (currentSong);
         rhythmLine.StartMoving();
     }
@@ -216,7 +216,7 @@ public class GameController : MonoBehaviour
                 .UpdateTextUI(UIController.UITextComponents.helpButtonText,
                 "Help",
                 false);
-            string currentTitle = notesController.noteLevels[level].levelName;
+            string currentTitle = notesController.list[level].levelName;
             UIController
                 .UpdateTextUI(UIController.UITextComponents.titleText,
                 currentTitle,

@@ -25,7 +25,7 @@ public class CSVWriter : MonoBehaviour
             "_Results_" +
             System.DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") +
             ".csv";
-        wholeFilePath = Application.dataPath + "/" + fileName;
+        wholeFilePath = Application.persistentDataPath + "/" + fileName;
 
         StreamWriter tw = new StreamWriter(wholeFilePath, true);
 
@@ -67,7 +67,8 @@ public class CSVWriter : MonoBehaviour
             System.DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") +
             ".png";
 
-        wholeFilePathScreen = Application.dataPath + "/" + screenGrabName;
+        wholeFilePathScreen =
+            Application.persistentDataPath + "/" + screenGrabName;
         ScreenCapture.CaptureScreenshot((wholeFilePathScreen), 2);
 
         Invoke("UploadDelay", .75f);
