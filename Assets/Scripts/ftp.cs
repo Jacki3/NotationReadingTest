@@ -151,6 +151,8 @@ class ftp
         /* Log in to the FTP Server with the User Name and Password Provided */
         ftpRequest.Credentials = new NetworkCredential(user, pass);
         ftpRequest.UseBinary = true;
+        ftpRequest.UsePassive = true;
+        ftpRequest.KeepAlive = true;
         ftpRequest.Method = WebRequestMethods.Ftp.UploadFile;
 
         byte[] fileData = File.ReadAllBytes(target);

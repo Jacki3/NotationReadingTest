@@ -133,6 +133,7 @@ public class NotesController : MonoBehaviour
             .UpdateTextUI(UIController.UITextComponents.titleText,
             currentTitle,
             false);
+        ScoreController.ResetScores();
 
         //FINALS
         //build out 3/4 - get the backing tracks (downtime)
@@ -256,7 +257,7 @@ public class NotesController : MonoBehaviour
         notePrefab.transform.localPosition = new Vector3(posX - .2f, posY, 0);
 
         playedNotes.Add (notePrefab);
-        notePrefab.gameObject.SetActive(true);
+        notePrefab.gameObject.SetActive(false);
     }
 
     public void SpawnNotes()

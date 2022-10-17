@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class CSVWriter : MonoBehaviour
 {
+    [HideInInspector]
     public string testState = "preTest";
 
     private string wholeFilePath;
@@ -42,11 +43,12 @@ public class CSVWriter : MonoBehaviour
             new ftp(@"ftp://ftp.lewin-of-greenwich-naval-history-forum.co.uk",
                 "lewin-of-greenwich-naval-history-forum.co.uk",
                 "YdFDyYkUjKyjmseVmGkhipAB");
+
+        // ftpClient
+        //     .createDirectory("/Study4/NoteReadingResults/" +
+        //     CoreElements.i.userIndex.ToString());
         ftpClient
-            .createDirectory("/Study4/NoteReadingResults/" +
-            CoreElements.i.userIndex.ToString());
-        ftpClient
-            .upload("/Study4/NoteReadingResults/" +
+            .upload("Study4/NoteReadingResults/" +
             CoreElements.i.userIndex.ToString() +
             "/" +
             fileName,
@@ -68,7 +70,7 @@ public class CSVWriter : MonoBehaviour
         wholeFilePathScreen = Application.dataPath + "/" + screenGrabName;
         ScreenCapture.CaptureScreenshot((wholeFilePathScreen), 2);
 
-        Invoke("UploadDelay", .5f);
+        Invoke("UploadDelay", .75f);
     }
 
     private void UploadDelay()
@@ -78,8 +80,8 @@ public class CSVWriter : MonoBehaviour
                 "lewin-of-greenwich-naval-history-forum.co.uk",
                 "YdFDyYkUjKyjmseVmGkhipAB");
         ftpClient
-            .UploadImage(wholeFilePathScreen,
-            "/Study4/NoteReadingResults/" +
+            .UploadImage(@wholeFilePathScreen,
+            "Study4/NoteReadingResults/" +
             CoreElements.i.userIndex.ToString() +
             "/" +
             screenGrabName);

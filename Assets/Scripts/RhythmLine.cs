@@ -27,7 +27,7 @@ public class RhythmLine : MonoBehaviour
 
     private int movesMade = 0;
 
-    private int movesMadeOnStaff = 0;
+    public int movesMadeOnStaff = 0;
 
     private int totalMovesMade = 0;
 
@@ -107,7 +107,7 @@ public class RhythmLine : MonoBehaviour
                 {
                     movedDown = true;
                     nextEventTime += interval;
-                    movesMadeOnStaff = 0;
+                    movesMadeOnStaff = -1;
                     dist = distanceToMove;
                     yPos -= NotesController.distanceY;
                     transform.position = new Vector3(defaultXPos, yPos, 0.5f);
